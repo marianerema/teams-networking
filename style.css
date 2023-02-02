@@ -1,3 +1,16 @@
+body {
+  background-color: rgb(177, 152, 199);
+}
+
 table {
-  width: 100pc;
+  width: 100%;
+  display: table-row;
+  color: #181414;
+  background-color: rgb(203, 239, 239);
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  background-color: aquamarine;
 }
