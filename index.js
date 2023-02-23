@@ -17,8 +17,10 @@ function displayTeams(teams) {
             <td>${team.members}</td>
             <td>${team.name}</td>
             <td>${team.url}</td>
-            <td></td>
-        </tr>   `
+            <td>
+              <a>❌</a>
+            </td>
+        </tr>`
   );
 
   document.querySelector("#teams tbody").innerHTML = teamsHTML.join("");
@@ -46,6 +48,16 @@ function onSubmit(e) {
         window.location.reload();
       }
     });
+}
+
+function removeTeamRequest(id) {
+  fetch("http://localhost:3000/teams-json/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
+  });
 }
 
 function initEvents() {
