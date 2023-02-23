@@ -18,7 +18,7 @@ function displayTeams(teams) {
             <td>${team.name}</td>
             <td>${team.url}</td>
             <td>
-              <a>❌</a>
+              <a data-id="${team.id}">✖️</a>
             </td>
         </tr>`
   );
@@ -63,6 +63,13 @@ function removeTeamRequest(id) {
 function initEvents() {
   const form = document.getElementById("editForm");
   form.addEventListener("submit", onSubmit);
+
+  document.querySelector("#teams tbody").addEventListener("click", e => {
+    if (e.target.matches("a")) {
+      const id = e.target.dataset.id;
+      console.warn("delete", id);
+    }
+  });
 }
 
 initEvents();
