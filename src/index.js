@@ -75,7 +75,7 @@ function removeTeamRequest(id) {
     body: JSON.stringify({ id })
   });
 }
-//TO DO - rename
+//TO DO - rename - next edit step
 function edit(id) {
   const team = allTeams.find(team => team.id === id);
   console.warn("edit", id, team);
