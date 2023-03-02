@@ -1,3 +1,4 @@
+let allTeams = [];
 fetch("http://localhost:3000/teams-json", {
   method: "GET",
   headers: {
@@ -6,6 +7,9 @@ fetch("http://localhost:3000/teams-json", {
 })
   .then(r => r.json())
   .then(teams => {
+    //window.allTeams = teams;
+    allTeams = teams;
+    console.info(teams);
     displayTeams(teams);
   });
 
@@ -43,7 +47,8 @@ function displayTeams(teams) {
             <td>${team.name}</td>
             <td>${team.url}</td>
             <td>
-              <a data-id="${team.id}">✖️</a>
+              <a data-id="${team.id}" class="remove-btn">✖️</a>
+              <a data-id="${team.id}" class="edit-btn">&#9998;</a>
             </td>
         </tr>`
   );
@@ -55,7 +60,6 @@ function onSubmit(e) {
   e.preventDefault();
 
   createTeamRequest().then(status => {
-    console.warn("status", status.success, status.id);
     if (status.success) {
       window.location.reload();
     }
@@ -71,19 +75,32 @@ function removeTeamRequest(id) {
     body: JSON.stringify({ id })
   });
 }
+//TO DO - rename
+function edit(id) {
+  const team = allTeams.find(team => team.id === id);
+  console.warn("edit", id, team);
+
+  document.getElementById("promotion").value = "promotion";
+  document.getElementById("members").value = "members";
+  document.getElementById("name").value = "name";
+  document.getElementById("url").value = "url";
+}
 
 function initEvents() {
   const form = document.getElementById("editForm");
   form.addEventListener("submit", onSubmit);
 
   document.querySelector("#teams tbody").addEventListener("click", e => {
-    if (e.target.matches("a")) {
+    if (e.target.matches("a.remove-btn")) {
       const id = e.target.dataset.id;
       deleteTeamRequest(id).then(status => {
         if (status.success) {
           window.location.reload();
         }
       });
+    } else if (e.target.matches("a.edit-btn")) {
+      const id = e.target.dataset.id;
+      edit(id);
     }
   });
 }
