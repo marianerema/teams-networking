@@ -54,22 +54,26 @@ function readTeam() {
   };
 }
 
-function displayTeams(teams) {
-  const teamsHTML = teams.map(
-    team => `
-        <tr>
-            <td>${team.promotion}</td>
-            <td>${team.members}</td>
-            <td>${team.name}</td>
-            <td>${team.url}</td>
-            <td>
-              <a data-id="${team.id}" class="remove-btn">✖️</a>
-              <a data-id="${team.id}" class="edit-btn">&#9998;</a>
-            </td>
-        </tr>`
-  );
+function getTeamsHTML(teams) {
+  return teams
+    .map(
+      team => `
+      <tr>
+        <td>${team.promotion}</td>
+        <td>${team.members}</td>
+        <td>${team.name}</td>
+        <td>${team.url}</td>
+        <td>
+          <a data-id="${team.id}" class="remove-btn">✖️</a>
+          <a data-id="${team.id}" class="edit-btn">&#9998;</a>
+        </td>
+      </tr>`
+    )
+    .join("");
+}
 
-  document.querySelector("#teams tbody").innerHTML = teamsHTML.join("");
+function displayTeams(teams) {
+  document.querySelector("#teams tbody").innerHTML = getTeamsHTML(teams);
 }
 
 function onSubmit(e) {
