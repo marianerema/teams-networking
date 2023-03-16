@@ -14,3 +14,7 @@ thead {
   vertical-align: middle;
   background-color: aquamarine;
 }
+
+#main {
+  display: flex;
+}
