@@ -100,6 +100,8 @@ function onSubmit(e) {
     createTeamRequest(team).then(status => {
       if (status.success) {
         //1. "window.location.reload();" <= FARA EA? => ADAUGAM DATELE IN TABEL...
+        //   1.0 adaug id in team
+        team.id = status.id;
         //   1.1 add in allTeams
         allTeams.push(team);
         //allTeams = [...allTeams, team]
