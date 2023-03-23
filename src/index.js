@@ -133,7 +133,6 @@ function removeTeamRequest(id) {
   });
 }
 
-//TO DO - rename
 function prepareEdit(id) {
   const team = allTeams.find(team => team.id === id);
   editId = id;
