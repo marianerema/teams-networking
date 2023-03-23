@@ -76,7 +76,13 @@ function getTeamsHTML(teams) {
     .join("");
 }
 
+let oldDisplayTeams;
 function displayTeams(teams) {
+  if (oldDisplayTeams === teams) {
+    console.warn("same teams to display");
+    return;
+  }
+  oldDisplayTeams = teams;
   document.querySelector("#teams tbody").innerHTML = getTeamsHTML(teams);
 }
 
@@ -98,9 +104,16 @@ function onSubmit(e) {
     updateTeamRequest(team).then(status => {
       if (status.success) {
         // load newTeams...?
-        loadTeams();
-        //TODO don't load teams...
-        //displayTeams(allTeams);
+        //loadTeams();
+        allTeams = [...allTeams];
+        const editedTeam = allTeams.find(team => team.id === editId);
+        console.warn("editedTeam", JSON.stringify(editedTeam), team);
+        editedTeam.promotion = team.promotion;
+        editedTeam.url = team.url;
+        editedTeam.members = team.members;
+        editedTeam.name = team.name;
+
+        displayTeams(allTeams);
         e.target.reset();
       }
     });
@@ -111,8 +124,8 @@ function onSubmit(e) {
         //   1.0 adaug id in team
         team.id = status.id;
         //   1.1 add in allTeams
-        allTeams.push(team);
-        //allTeams = [...allTeams, team]
+        //allTeams.push(team);
+        allTeams = [...allTeams, team];
         //   1.2 Se va crea de x ori echipa... => Apelam displayTeams(allTeams)
         displayTeams(allTeams);
         //3. stergem datele din input...
