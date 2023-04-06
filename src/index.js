@@ -62,17 +62,14 @@ function loadTeams() {
 async function onSubmit(e) {
   e.preventDefault();
   const team = readTeam();
-
+  let status = { succes: false };
   if (editId) {
     team.id = editId;
 
-    const status = await updateTeamRequest(team);
+    status = await updateTeamRequest(team);
     if (status.success) {
-      // load newTeams...?
-      //loadTeams();
       allTeams = allTeams.map(t => {
         if (t.id === team.id) {
-          console.warn("t", t, team);
           return {
             ...t,
             ...team
@@ -80,26 +77,18 @@ async function onSubmit(e) {
         }
         return t;
       });
-
-      displayTeams(allTeams);
-      e.target.reset();
     }
   } else {
-    const status = await createTeamRequest(team);
-    console.warn("status", status.succes, status.id);
+    status = await createTeamRequest(team);
     if (status.success) {
-      //1. "window.location.reload();" <= FARA EA? => ADAUGAM DATELE IN TABEL...
-      //   1.0 adaug id in team
       team.id = status.id;
-      //   1.1 add in allTeams
-      //allTeams.push(team);
       allTeams = [...allTeams, team];
-      //   1.2 Se va crea de x ori echipa... => Apelam displayTeams(allTeams)
-      displayTeams(allTeams);
-      //3. stergem datele din input...
-      //writeTeam({ promotion: "", name: "", url: "", members: "" });
-      e.target.reset();
     }
+  }
+
+  if (status.succes) {
+    displayTeams(allTeams);
+    e.target.reset();
   }
 }
 
