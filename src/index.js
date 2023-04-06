@@ -1,5 +1,5 @@
 import { createTeamRequest, loadTeamRequest, updateTeamRequest, deleteTeamRequest } from "./requests";
-import { sleep } from "./utilities";
+import { $, sleep } from "./utilities";
 
 let allTeams = [];
 let editId;
@@ -23,7 +23,8 @@ function writeTeam({ promotion, members, name, url }) {
 function getTeamsHTML(teams) {
   return teams
     .map(
-      ({ promotion, members, name, url, id }) => `
+      ({ promotion, members, name, url, id }) =>
+        `
       <tr>
         <td>${promotion}</td>
         <td>${members}</td>
@@ -35,7 +36,8 @@ function getTeamsHTML(teams) {
           <a data-id="${id}" class="remove-btn">✖️</a>
           <a data-id="${id}" class="edit-btn">&#9998;</a>
         </td>
-      </tr>`
+      </tr>
+      `
     )
     .join("");
 }
@@ -43,18 +45,16 @@ function getTeamsHTML(teams) {
 let oldDisplayTeams;
 function displayTeams(teams) {
   if (oldDisplayTeams === teams) {
-    console.warn("same teams to display");
     return;
   }
   oldDisplayTeams = teams;
-  document.querySelector("#teams tbody").innerHTML = getTeamsHTML(teams);
+  $("#teams tbody").innerHTML = getTeamsHTML(teams);
 }
 
 function loadTeams() {
   loadTeamRequest().then(teams => {
     //window.allTeams = teams;
     allTeams = teams;
-    console.info(teams);
     displayTeams(teams);
   });
 }
@@ -98,14 +98,25 @@ function prepareEdit(id) {
   writeTeam(team);
 }
 
+function searchTeams(search) {
+  return allTeams.filter(team => {
+    return team.promotion.indexOf(search) > -1;
+  });
+}
+
 function initEvents() {
-  const form = document.getElementById("editForm");
+  const form = $("#editForm");
   form.addEventListener("submit", onSubmit);
   form.addEventListener("reset", () => {
     editId = undefined;
   });
 
-  document.querySelector("#teams tbody").addEventListener("click", async e => {
+  $("#search").addEventListener("input", e => {
+    const teams = searchTeams(e.target.value);
+    displayTeams(teams);
+  });
+
+  $("#teams tbody").addEventListener("click", async e => {
     if (e.target.matches("a.remove-btn")) {
       const id = e.target.dataset.id;
       const status = await deleteTeamRequest(id);
@@ -124,15 +135,16 @@ loadTeams();
 initEvents();
 
 //TODO move in external file
-console.info("sleep");
+
+// console.info("sleep");
 sleep(2000).then(r => {
-  console.warn("done", r);
+  // console.warn("done", r);
 });
 
-console.warn("after sleep");
+// console.warn("after sleep");
 
 (async () => {
-  console.info("sleep2");
+  // console.info("sleep2");
   var r2 = await sleep(5000);
-  console.warn("done2", r2);
+  // console.warn("done2", r2);
 })();
