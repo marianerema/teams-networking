@@ -1,6 +1,6 @@
-import debounce from "lodash/debounce";
+//import debounce from "lodash/debounce";
 import { createTeamRequest, loadTeamRequest, updateTeamRequest, deleteTeamRequest } from "./requests";
-import { $, sleep } from "./utilities";
+import { $, sleep, debounce } from "./utilities";
 
 let allTeams = [];
 let editId;
@@ -114,10 +114,10 @@ function initEvents() {
 
   $("#search").addEventListener(
     "input",
-    debounce(e => {
+    debounce(function (e) {
       const teams = searchTeams(e.target.value);
       displayTeams(teams);
-      console.info("search");
+      console.warn("search", e, this, this === e.target);
     }, 300)
   );
 
