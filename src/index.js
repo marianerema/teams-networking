@@ -16,9 +16,9 @@ function readTeam() {
 
 function writeTeam({ promotion, members, name, url }) {
   document.$("#promotion").value = promotion;
-  document.getElementById("members").value = members;
-  document.getElementById("name").value = name;
-  document.getElementById("url").value = url;
+  document.$("#members").value = members;
+  document.$("#name").value = name;
+  document.$("#url").value = url;
 }
 
 function getTeamsHTML(teams) {
