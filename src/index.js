@@ -15,7 +15,7 @@ function readTeam() {
 }
 
 function writeTeam({ promotion, members, name, url }) {
-  document.getElementById("promotion").value = promotion;
+  document.$("#promotion").value = promotion;
   document.getElementById("members").value = members;
   document.getElementById("name").value = name;
   document.getElementById("url").value = url;
@@ -53,10 +53,11 @@ function displayTeams(teams) {
 }
 
 function loadTeams() {
-  loadTeamRequest().then(teams => {
+  return loadTeamRequest().then(teams => {
     //window.allTeams = teams;
     allTeams = teams;
     displayTeams(teams);
+    return teams;
   });
 }
 
@@ -135,8 +136,12 @@ function initEvents() {
     }
   });
 }
+$("#editForm").classList.add("loading-mask");
+loadTeams().then(async () => {
+  await sleep(200);
+  $("#editForm").classList.remove("loading-mask");
+});
 
-loadTeams();
 initEvents();
 
 //TODO move in external file
